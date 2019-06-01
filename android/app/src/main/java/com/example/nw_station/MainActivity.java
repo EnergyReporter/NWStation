@@ -1,4 +1,4 @@
-package com.example.nw_station;
+package com.nwstation.flplug;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
