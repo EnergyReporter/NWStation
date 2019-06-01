@@ -46,7 +46,7 @@ class _DeviceListPageState extends State<DeviceListPage> {
         items.add(Card(
             child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
               ListTile(
-                  leading: Icon(Icons.power_input),
+                  leading: Icon(Icons.devices),
                   title: Text(doc.data['nickname']),
                   subtitle:
                   Text("${doc.data['manufacturer']} ${doc.data['model']}"))
