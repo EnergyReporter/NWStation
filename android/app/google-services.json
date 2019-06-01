@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "129121267100",
+    "firebase_url": "https://nwstation.firebaseio.com",
+    "project_id": "nwstation",
+    "storage_bucket": "nwstation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129121267100:android:2c9622a826baca18",
+        "android_client_info": {
+          "package_name": "com.nwstation.flplug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129121267100-l9667949gafniu58122i4u2bq12nu94d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJG0kt6Pr5yDV0uQ7bMaRrqjD5zrxwiR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129121267100-l9667949gafniu58122i4u2bq12nu94d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
