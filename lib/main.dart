@@ -4,6 +4,7 @@ import 'package:nw_station/pages/AddDevice.dart';
 import 'package:nw_station/pages/DevicesListPage.dart';
 import 'package:nw_station/pages/LocationListPage.dart';
 import 'package:nw_station/pages/MetersListPage.dart';
+import 'package:nw_station/pages/TakePicturePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'auth/LoginButton.dart';
@@ -122,8 +123,9 @@ class _MyHomePageState extends State<MyHomePage> {
           new LocationListPage(),
           new MeterListPage(_userId),
           new DeviceListPage(_userId),
+            new TakePicturePage(),
         ],
-        onPageChanged: _onPageBarTapped,
+          // onPageChanged: _onPageBarTapped,
         controller: _pageController,
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -140,9 +142,14 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.devices),
             title: Text('Devices'),
           ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.camera),
+              title: Text('Camera'),
+            ),
         ],
         currentIndex: _selectedPage,
         selectedItemColor: Colors.amber[800],
+          unselectedItemColor: Colors.black,
         onTap: _onPageBarTapped,
       ),
       floatingActionButton: FloatingActionButton(
