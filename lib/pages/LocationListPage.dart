@@ -1,10 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:nw_station/auth/LoginButton.dart';
-import 'package:nw_station/pages/GenericListPage.dart';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:nw_station/store/TestCollection.dart';
 
 class LocationListPage extends StatefulWidget {
   LocationListPage();
@@ -14,41 +10,44 @@ class LocationListPage extends StatefulWidget {
 }
 
 class _LocationListPageState extends State<LocationListPage> {
-  List<String> _locations = [];
-
   @override
   void initState() {
     super.initState();
-    getFavorites('test').then((List<String> faves) {
-      _locations = faves;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: new Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            LoginButton(),
-            new Text(
-              "Locations",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .display1,
-            ),
-           new Text(
-              "Hi !"+ (!_locations.isEmpty ? _locations.join(",") : "None found"),
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .display1,
-            ),
-          ],
+      body: Container(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection('test').snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return new Center(child: new CircularProgressIndicator());
+              default:
+                return new ListView(children: getExpenseItems(snapshot));
+            }
+          },
         ),
       ),
     );
+  }
+
+  getExpenseItems(AsyncSnapshot<QuerySnapshot> snapshot) {
+    List<Widget> items = [];
+    for (DocumentSnapshot doc in snapshot.data.documents) {
+      if (doc.data.containsKey('name') && doc.data['name'] is List) {
+        for (String n in doc.data['name']) {
+          items.add(new Container(
+              child: new ListTile(title: new Text(n)),
+              decoration: new BoxDecoration(
+                  border: new Border(
+                      bottom: new BorderSide(color: Colors.black26)))));
+        }
+      }
+    }
+    return items;
   }
 }

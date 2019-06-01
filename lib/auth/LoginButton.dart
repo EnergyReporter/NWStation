@@ -9,18 +9,18 @@ class LoginButton extends StatelessWidget {
         stream: authService.user,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return MaterialButton(
-              onPressed: () => authService.signOut(),
-              color: Colors.red,
-              textColor: Colors.white,
-              child: Text('Signout'),
+            return GestureDetector(
+              onTap: () => authService.signOut(),
+              child: ListTile(
+                title: Text('Signout'),
+              ),
             );
           } else {
-            return MaterialButton(
-              onPressed: () => authService.googleSignIn(),
-              color: Colors.white,
-              textColor: Colors.black,
-              child: Text('Login with Google'),
+            return GestureDetector(
+              onTap: () => authService.googleSignIn(),
+              child: ListTile(
+                title: Text('Login with Google'),
+              ),
             );
           }
         });
