@@ -4,8 +4,10 @@ import 'package:nw_station/pages/DevicesListPage.dart';
 import 'package:nw_station/pages/LocationListPage.dart';
 import 'package:nw_station/pages/MetersListPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_ui/flutter_firebase_ui.dart';
-// import 'package:firebase_ui/l10n/localization.dart';
+
+import 'auth/auth.dart';
+//import 'package:firebase_ui/flutter_firebase_ui.dart';
+//import 'package:firebase_ui/l10n/localization.dart';
 
 void main() => runApp(MyApp());
 
@@ -51,10 +53,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  StreamSubscription<FirebaseUser> _listener;
-
-  FirebaseUser _currentUser;
+//  final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseUser user;
 
   PageController _pageController;
   int _selectedPage = 0;
@@ -65,13 +65,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _checkCurrentUser();
     _pageController = new PageController();
   }
 
   @override
   void dispose() {
-    _listener.cancel();
     super.dispose();
     _pageController.dispose();
   }
@@ -103,30 +101,30 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-   if (_currentUser == null) {
-      return new SignInScreen(
-        title: "Demo",
-        header: new Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: new Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: new Text("Demo"),
-          ),
-        ),
-        showBar: true,
-        padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
-        avoidBottomInset: true,
-        color: Color(0xFF363636),
-        providers: [
-          ProvidersTypes.google,
-          //ProvidersTypes.facebook,
-          //ProvidersTypes.twitter,
-          ProvidersTypes.email
-        ],
-        twitterConsumerKey: "",
-        twitterConsumerSecret: "",
-      );
-    } else {
+//   if (_currentUser == null) {
+//      return new SignInScreen(
+//        title: "Demo",
+//        header: new Padding(
+//          padding: const EdgeInsets.symmetric(vertical: 16.0),
+//          child: new Padding(
+//            padding: const EdgeInsets.all(16.0),
+//            child: new Text("Demo"),
+//          ),
+//        ),
+//        showBar: true,
+//        padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
+//        avoidBottomInset: true,
+//        color: Color(0xFF363636),
+//        providers: [
+//          ProvidersTypes.google,
+//          //ProvidersTypes.facebook,
+//          //ProvidersTypes.twitter,
+//          ProvidersTypes.email
+//        ],
+//        twitterConsumerKey: "",
+//        twitterConsumerSecret: "",
+//      );
+//    } else {
       return Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
@@ -167,17 +165,32 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Icon(Icons.add),
         ), // This trailing comma makes auto-formatting nicer for build methods.
       );
-    }
+//    }
   }
 
-void _checkCurrentUser() async {
-    _currentUser = await _auth.currentUser();
-    _currentUser?.getIdToken(refresh: true);
+}
 
-    _listener = _auth.onAuthStateChanged.listen((FirebaseUser user) {
-      setState(() {
-        _currentUser = user;
-      });
-    });
-  }  
+class LoginButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+        stream: authService.user,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return MaterialButton(
+              onPressed: () => authService.signOut(),
+              color: Colors.red,
+              textColor: Colors.white,
+              child: Text('Signout'),
+            );
+          } else {
+            return MaterialButton(
+              onPressed: () => authService.googleSignIn(),
+              color: Colors.white,
+              textColor: Colors.black,
+              child: Text('Login with Google'),
+            );
+          }
+        });
+  }
 }
