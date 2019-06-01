@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'auth.dart';
 
 class LoginButton extends StatelessWidget {
+  final bool showLogin;
+
+  LoginButton(this.showLogin);
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: authService.user,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (showLogin) {
             return GestureDetector(
               onTap: () => authService.signOut(),
               child: ListTile(

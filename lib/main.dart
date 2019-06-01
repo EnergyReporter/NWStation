@@ -109,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   )
                 : Offstage(),
-            new LoginButton(),
+            new LoginButton(_userEmail != null),
           ],
         ),
       ),
