@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:nw_station/pages/AddDevice.dart';
 import 'package:nw_station/pages/DevicesListPage.dart';
 import 'package:nw_station/pages/LocationListPage.dart';
 import 'package:nw_station/pages/MetersListPage.dart';
@@ -145,7 +146,12 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _onPageBarTapped,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          if (_selectedPage == 2) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddDevicePage(_userId)));
+          }
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
