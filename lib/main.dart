@@ -54,7 +54,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 //  final FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseUser user;
+//  FirebaseUser user;
 
   PageController _pageController;
   int _selectedPage = 0;
