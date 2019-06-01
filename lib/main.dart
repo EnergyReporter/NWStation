@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   PageController _pageController;
   String _username;
   String _userEmail;
+  String _userId;
 
   int _selectedPage = 0;
   int _counter = 0;
@@ -56,9 +57,11 @@ class _MyHomePageState extends State<MyHomePage> {
         if (u == null) {
           _username = null;
           _userEmail = null;
+          _userId = null;
         } else {
           _username = u.displayName;
           _userEmail = u.email;
+          _userId = u.uid;
         }
       });
     });
@@ -116,8 +119,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: new PageView(
         children: [
           new LocationListPage(),
-          new MetersListPage(),
-          new DevicesListPage(),
+          new MeterListPage(_userId),
+          new DeviceListPage(_userId),
         ],
         onPageChanged: _onPageBarTapped,
         controller: _pageController,

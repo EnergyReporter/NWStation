@@ -27,7 +27,7 @@ class _LocationListPageState extends State<LocationListPage> {
               case ConnectionState.waiting:
                 return new Center(child: new CircularProgressIndicator());
               default:
-                return new ListView(children: getExpenseItems(snapshot));
+                return new ListView(children: getLocations(snapshot));
             }
           },
         ),
@@ -35,7 +35,7 @@ class _LocationListPageState extends State<LocationListPage> {
     );
   }
 
-  getExpenseItems(AsyncSnapshot<QuerySnapshot> snapshot) {
+  getLocations(AsyncSnapshot<QuerySnapshot> snapshot) {
     List<Widget> items = [];
     for (DocumentSnapshot doc in snapshot.data.documents) {
       if (doc.data.containsKey('name') && doc.data['name'] is List) {
