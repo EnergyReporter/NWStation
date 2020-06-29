@@ -9,20 +9,20 @@ class AuthService {
 
     scopes: [
       'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
+      // 'https://www.googleapis.com/auth/contacts.readonly',
     ],
   );
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _db = Firestore.instance;
 
   // Shared State for Widgets
-  Observable<FirebaseUser> user; // firebase user
-  Observable<Map<String, dynamic>> profile; // custom user data in Firestore
+  Stream<FirebaseUser> user; // firebase user
+  Stream<Map<String, dynamic>> profile; // custom user data in Firestore
   PublishSubject loading = PublishSubject();
 
   // constructor
   AuthService() {
-    user = Observable(_auth.onAuthStateChanged);
+    user = _auth.onAuthStateChanged;
 
     profile = user.switchMap((FirebaseUser u) {
       if (u != null) {
@@ -32,7 +32,7 @@ class AuthService {
             .snapshots()
             .map((snap) => snap.data);
       } else {
-        return Observable.just({});
+        return Stream.value({});
       }
     });
   }
@@ -47,11 +47,12 @@ class AuthService {
     // Step 2
     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
     AuthCredential credential = GoogleAuthProvider.getCredential(idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-    FirebaseUser user = await _auth.signInWithCredential(credential);
+    AuthResult result = await _auth.signInWithCredential(credential);
 
 //        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
     // Step 3
+    FirebaseUser user = result.user;
     updateUserData(user);
 
     // Done

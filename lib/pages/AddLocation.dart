@@ -2,19 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 
-class AddDevicePage extends StatefulWidget {
+class AddLocationPage extends StatefulWidget {
   final String _userId;
 
-  AddDevicePage(this._userId);
+  AddLocationPage(this._userId);
 
   @override
-  _AddDevicePageState createState() => _AddDevicePageState();
+  _AddLocationPageState createState() => _AddLocationPageState();
 }
 
-class _AddDevicePageState extends State<AddDevicePage> {
-  String _nickname;
-  String _manufacturer;
-  String _model;
+class _AddLocationPageState extends State<AddLocationPage> {
+  String _location;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -22,7 +20,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Device"),
+        title: Text("Add Location"),
       ),
       body: Form(
         key: _formKey,
@@ -32,31 +30,11 @@ class _AddDevicePageState extends State<AddDevicePage> {
             child: Column(
               children: <Widget>[
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Device Nickname'),
-                  onSaved: (val) => setState(() => _nickname = val),
+                  decoration: InputDecoration(labelText: 'Location'),
+                  onSaved: (val) => setState(() => _location = val),
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Device Name.';
-                    }
-                    return value;
-                  },
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Device Manufacturer'),
-                  onSaved: (val) => setState(() => _manufacturer = val),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Device Name.';
-                    }
-                    return value;
-                  },
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Device Model'),
-                  onSaved: (val) => setState(() => _model = val),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Device Name.';
+                      return 'Location';
                     }
                     return value;
                   },
@@ -74,7 +52,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
                               _formKey.currentState.validate();
                               _formKey.currentState.save();
 
-                              addDeviceDocument(widget._userId);
+                              addLocationDocument(widget._userId);
                               Navigator.pop(context);
                             },
                             child: Text('Save'),
@@ -99,15 +77,13 @@ class _AddDevicePageState extends State<AddDevicePage> {
     );
   }
 
-  Future addDeviceDocument(String userid) async {
+  Future addLocationDocument(String userid) async {
     var record = {
-      'nickname': _nickname,
-      'model': _model,
-      'manufacturer': _manufacturer
+      'location': _location,
     };
 
     DocumentReference doc = await Firestore.instance
-        .collection('users/${widget._userId}/devices')
+        .collection('users/${widget._userId}/locations')
         .add(record);
   }
 }

@@ -45,7 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String _userId;
 
   int _selectedPage = 0;
-  int _counter = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
@@ -83,12 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,16 +113,17 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: new PageView(
         children: [
-          new LocationListPage(),
-          new MeterListPage(_userId),
+          // new LocationListPage(_userId),
+          // new MeterListPage(_userId),
           new DeviceListPage(_userId),
-            new TakePicturePage(),
+          // new TakePicturePage(),
         ],
           // onPageChanged: _onPageBarTapped,
         controller: _pageController,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
+          /*
           BottomNavigationBarItem(
             icon: Icon(Icons.my_location),
             title: Text('Locations'),
@@ -138,14 +132,17 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.power_input),
             title: Text('Meters'),
           ),
+          */
           BottomNavigationBarItem(
             icon: Icon(Icons.devices),
             title: Text('Devices'),
           ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.camera),
-              title: Text('Camera'),
-            ),
+          /*
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera),
+            title: Text('Camera'),
+          ),
+          */
         ],
         currentIndex: _selectedPage,
         selectedItemColor: Colors.amber[800],
@@ -154,12 +151,18 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          if (_selectedPage == 0) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddDevicePage(_userId)));
+          }
+          /*
           if (_selectedPage == 2) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => AddDevicePage(_userId)));
           }
+          */
         },
-        tooltip: 'Increment',
+        tooltip: 'Add',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
