@@ -45,7 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String _userId;
 
   int _selectedPage = 0;
-  int _counter = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
@@ -83,12 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,10 +113,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: new PageView(
         children: [
-          new LocationListPage(),
+          new LocationListPage(_userId),
           new MeterListPage(_userId),
           new DeviceListPage(_userId),
-            new TakePicturePage(),
+          new TakePicturePage(),
         ],
           // onPageChanged: _onPageBarTapped,
         controller: _pageController,

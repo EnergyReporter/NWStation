@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class LocationListPage extends StatefulWidget {
-  LocationListPage();
+  String _userId;
+
+  LocationListPage(this._userId);
 
   @override
   _LocationListPageState createState() => _LocationListPageState();
@@ -20,7 +22,9 @@ class _LocationListPageState extends State<LocationListPage> {
     return new Scaffold(
       body: Container(
         child: StreamBuilder<QuerySnapshot>(
-          stream: Firestore.instance.collection('test').snapshots(),
+          stream: Firestore.instance
+              .collection('users/${widget._userId}/locations')
+              .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             switch (snapshot.connectionState) {
@@ -37,14 +41,16 @@ class _LocationListPageState extends State<LocationListPage> {
 
   getLocations(AsyncSnapshot<QuerySnapshot> snapshot) {
     List<Widget> items = [];
-    for (DocumentSnapshot doc in snapshot.data.documents) {
-      if (doc.data.containsKey('name') && doc.data['name'] is List) {
-        for (String n in doc.data['name']) {
-          items.add(new Container(
-              child: new ListTile(title: new Text(n)),
-              decoration: new BoxDecoration(
-                  border: new Border(
-                      bottom: new BorderSide(color: Colors.black26)))));
+    if (snapshot.data != null) {
+      for (DocumentSnapshot doc in snapshot.data.documents) {
+        if (doc.data.containsKey('name') && doc.data['name'] is List) {
+          for (String n in doc.data['name']) {
+            items.add(new Container(
+                child: new ListTile(title: new Text(n)),
+                decoration: new BoxDecoration(
+                    border: new Border(
+                        bottom: new BorderSide(color: Colors.black26)))));
+          }
         }
       }
     }
